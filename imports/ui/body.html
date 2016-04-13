@@ -5,8 +5,19 @@
     </header>
     {{#if currentUser}}
       <p> Welcome {{currentUser.profile.name}} </p>
+        {{> logWork}}
     {{else}}
       {{>loginButtons}}
     {{/if}}
   </div>
 </body>
+
+<template name="logWork">
+  <form class="new-log">
+    <input type="text" name="project" placeholder="Specify project" />
+    <input type="text" name="client" placeholder="Specify client" />
+    <input type="text" name="reason" placeholder="Specify reason" />
+    <input type="number" name="minutes" placeholder="Add minutes" />
+    <input type="submit" />
+  </form>
+</template>

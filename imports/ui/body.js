@@ -1,31 +1,59 @@
 import { Template } from 'meteor/templating';
 import { WorkLogs } from '../api/work-logs.js';
-
+import { Projects } from '../api/projects.js';
+import { Clients } from '../api/clients.js';
+import { Reasons } from '../api/reasons.js';
+import { ReactiveDict } from 'meteor/reactive-dict';
 
 import './body.html';
 
+Template.logWork.onCreated(function() {
+  this.newLogWorkState = new ReactiveDict();
+});
+
 Template.logWork.events({
-  'submit .new-log'(event) {
+  'change .project'(event, instance) {
+    instance.newLogWorkState.set('project',  $(event.target).val());
+  },
+  'change .client'(event, instance) {
+    instance.newLogWorkState.set('client',  $(event.target).val());
+  },
+  'change .reason'(event, instance) {
+    instance.newLogWorkState.set('reason',  $(event.target).val());
+  },
+  'change .minutes'(event, instance) {
+    instance.newLogWorkState.set('minutes',  $(event.target).val());
+  },
+  'submit .new-log'(event, instance) {
     // Prevent default browser form submit
     event.preventDefault();
-
-    // Get value from form element
-    const $target = $(event.target);
-
-    const $project = $target.find('input[name=project]');
-    const $client = $target.find('input[name=client]');
-    const $reason = $target.find('input[name=reason]');
-    const $minutes = $target.find('input[name=minutes]');
-
 
     // Insert a task into the collection
     WorkLogs.insert({
       user: Meteor.user().profile.name,
-      project: $project.val(),
-      client: $project.val(),
-      reason: $reason.val(),
-      minutes: parseInt($minutes.val()),
+      project: instance.newLogWorkState.get('project'),
+      client: instance.newLogWorkState.get('client'),
+      reason: instance.newLogWorkState.get('reason'),
+      minutes: parseInt(instance.newLogWorkState.get('minutes')),
       createdAt: new Date(), // current time
     });
   }
+});
+
+Template.projects.helpers({
+  projects: function() {
+    return Projects.find();
+  },
+});
+
+Template.clients.helpers({
+  clients: function() {
+    return Clients.find();
+  },
+});
+
+Template.reasons.helpers({
+  reasons: function() {
+    return Reasons.find();
+  },
 });

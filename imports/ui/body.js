@@ -69,6 +69,6 @@ Template.reasons.helpers({
 
 Template.workLogs.helpers({
   workLogs: function() {
-    return WorkLogs.find({}, {sort: {_id: 1}});
+    return WorkLogs.find({}, {sort: {createdAt: -1}});
   },
 });

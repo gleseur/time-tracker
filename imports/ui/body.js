@@ -8,6 +8,10 @@ import { ReactiveDict } from 'meteor/reactive-dict';
 import './body.html';
 
 Template.logWork.onCreated(function() {
+  Meteor.subscribe('clients');
+  Meteor.subscribe('reasons');
+  Meteor.subscribe('projects');
+  Meteor.subscribe('work-logs');
   this.newLogWorkState = new ReactiveDict();
 });
 
@@ -28,13 +32,18 @@ Template.logWork.events({
     // Prevent default browser form submit
     event.preventDefault();
 
+    let minutes = parseInt(instance.newLogWorkState.get('minutes'));
+    if (isNaN(minutes)) {
+      return;
+    }
+
     // Insert a task into the collection
     WorkLogs.insert({
       user: Meteor.user().profile.name,
       project: instance.newLogWorkState.get('project'),
       client: instance.newLogWorkState.get('client'),
       reason: instance.newLogWorkState.get('reason'),
-      minutes: parseInt(instance.newLogWorkState.get('minutes')),
+      minutes: minutes,
       createdAt: new Date(), // current time
     });
   }
@@ -55,5 +64,11 @@ Template.clients.helpers({
 Template.reasons.helpers({
   reasons: function() {
     return Reasons.find();
+  },
+});
+
+Template.workLogs.helpers({
+  workLogs: function() {
+    return WorkLogs.find({}, {sort: {_id: 1}});
   },
 });

@@ -5,7 +5,8 @@
     </header>
     {{#if currentUser}}
       <p> Welcome {{currentUser.profile.name}} </p>
-        {{> logWork}}
+      {{> logWork}}
+      {{> workLogs}}
     {{else}}
       <p>Login: {{>loginButtons}}</p>
     {{/if}}
@@ -47,4 +48,12 @@
   {{#each reasons}}
     <option value={{this.name}}>{{this.name}}</option>
   {{/each}}
+</template>
+
+<template name="workLogs">
+  <ul>
+    {{#each workLogs}}
+      <li>{{this.user}} / {{this.project}} / {{this.client}} / {{this.reason}} / {{this.minutes}}</li>
+    {{/each}}
+  </ul>
 </template>

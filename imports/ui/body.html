@@ -3,7 +3,7 @@
     <header>
       <h1>Time Tracker</h1>
     </header>
-    {{#if currentUser}}
+    {{#if currentUser.profile.admin}}
       <p> Welcome {{currentUser.profile.name}} </p>
       {{> logWork}}
       {{> workLogs}}

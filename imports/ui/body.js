@@ -46,6 +46,8 @@ Template.logWork.events({
       minutes: minutes,
       createdAt: new Date(), // current time
     });
+
+    $(event.target).find('input[name=minutes]').val('');
   }
 });
 

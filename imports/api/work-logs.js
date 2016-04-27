@@ -15,7 +15,7 @@ if (Meteor.isServer) {
 WorkLogs.allow({
   insert: function (userId, doc) {
     // the user must be logged in
-    return userId;
+    return userId && Meteor.users.findOne({ _id: userId }).profile.admin;
   },
   update: function (userId, doc, fields, modifier) {
     return false;

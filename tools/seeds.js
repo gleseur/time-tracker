@@ -1,6 +1,6 @@
 import { Projects } from '../imports/api/projects';
 import { Reasons } from '../imports/api/reasons';
-
+import { Clients } from '../imports/api/clients';
 
 function seedCollection(collection, values){
   for(let value of values){
@@ -17,13 +17,24 @@ function seedValue(collection, value){
 
 };
 
-seedCollection(Projects, [
-               {name: 'pro1'},
-               {name: 'pro2'},
-]);
+function seed(){
+  seedCollection(Projects, [
+                 {name: 'pro1'},
+                 {name: 'pro2'},
+  ]);
 
-seedCollection(Reasons, [
-               {name: 'reason_one'},
-               {name: 'no reason'},
-]);
+  seedCollection(Reasons, [
+                 {name: 'reason_one'},
+                 {name: 'no reason'},
+  ]);
+
+  seedCollection(Clients, [
+                 {name: 'TTX'},
+                 {name: 'XTT'},
+  ]);
+}
+
+if (Meteor.isServer) {
+  Meteor.startup(seed);
+}
 

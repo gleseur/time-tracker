@@ -12,27 +12,17 @@ Template.logWork.onCreated(function() {
   Meteor.subscribe('reasons');
   Meteor.subscribe('projects');
   Meteor.subscribe('work-logs');
-  this.newLogWorkState = new ReactiveDict();
 });
 
 Template.logWork.events({
-  'change .project'(event, instance) {
-    instance.newLogWorkState.set('project',  $(event.target).val());
-  },
-  'change .client'(event, instance) {
-    instance.newLogWorkState.set('client',  $(event.target).val());
-  },
-  'change .reason'(event, instance) {
-    instance.newLogWorkState.set('reason',  $(event.target).val());
-  },
-  'change .minutes'(event, instance) {
-    instance.newLogWorkState.set('minutes',  $(event.target).val());
-  },
   'submit .new-log'(event, instance) {
     // Prevent default browser form submit
     event.preventDefault();
 
-    let minutes = parseInt(instance.newLogWorkState.get('minutes'));
+    const project = $('select.project').val();
+    const client = $('select.client').val();
+    const reason = $('select.reason').val();
+    const minutes = parseInt($('input[name=minutes]').val());
     if (isNaN(minutes)) {
       return;
     }
@@ -40,9 +30,9 @@ Template.logWork.events({
     // Insert a task into the collection
     WorkLogs.insert({
       user: Meteor.user().profile.name,
-      project: instance.newLogWorkState.get('project'),
-      client: instance.newLogWorkState.get('client'),
-      reason: instance.newLogWorkState.get('reason'),
+      project: project,
+      client: client,
+      reason: reason,
       minutes: minutes,
       createdAt: new Date(), // current time
     });
